@@ -1,0 +1,53 @@
+name: Release Binary
+
+on:
+  push:
+    branches:
+      - '**'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Get previous minor version
+        id: get_version
+        run: |
+          # Get latest tag matching v1.*
+          latest_tag=$(git tag -l "v1.*" --sort=-v:refname | head -n 1)
+          if [[ -z "$latest_tag" ]]; then
+            minor=0
+          else
+            minor=$(echo $latest_tag | sed 's/v1\.//')
+            if ! [[ $minor =~ ^[0-9]+$ ]]; then
+              minor=0
+            fi
+          fi
+          new_minor=$((minor + 1))
+          version="1.$new_minor"
+          echo "version=$version" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Build the app (Windows single exe, framework-dependent)
+        run: dotnet publish -c Release -r win-x64 --self-contained false /p:PublishSingleFile=true -o out
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.get_version.outputs.version }}
+          name: v${{ steps.get_version.outputs.version }}
+          body: "Automated release v${{ steps.get_version.outputs.version }}"
+          files: |
+            out/**/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
