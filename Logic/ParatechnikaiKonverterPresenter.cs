@@ -6,30 +6,39 @@ public class ParatechnikaiKonverterPresenter : IParatechnikaiKonverterPresenter
 {
     public void Present(IParatechnikaiKonverter konverter, ParatechnikaiJellemzo? jellemzo, bool legreteg)
     {
-        if (legreteg)
+        Console.WriteLine();
+        Console.ForegroundColor = Constants.ResultTextColor;
+        try
         {
-            Console.WriteLine(ErtekMertekegyseggel(ParatechnikaiJellemzo.Rv, konverter.Ellenallas()));
-        }
-        else if (jellemzo.HasValue)
-        {
-            switch (jellemzo.Value)
+            if (legreteg)
             {
-                case ParatechnikaiJellemzo.SdErtek:
-                    Console.WriteLine(ErtekMertekegyseggel(ParatechnikaiJellemzo.Mu, konverter.Mu));
-                    Console.WriteLine(ErtekMertekegyseggel(ParatechnikaiJellemzo.Delta, konverter.Delta));
-                    Console.WriteLine(ErtekMertekegyseggel(ParatechnikaiJellemzo.Rv, konverter.Ellenallas()));
-                    break;
-                case ParatechnikaiJellemzo.Mu:
-                    Console.WriteLine(ErtekMertekegyseggel(ParatechnikaiJellemzo.Delta, konverter.Delta));
-                    Console.WriteLine(ErtekMertekegyseggel(ParatechnikaiJellemzo.SdErtek, konverter.SdErtek));
-                    Console.WriteLine(ErtekMertekegyseggel(ParatechnikaiJellemzo.Rv, konverter.Ellenallas()));
-                    break;
-                case ParatechnikaiJellemzo.Delta:
-                    Console.WriteLine(ErtekMertekegyseggel(ParatechnikaiJellemzo.Mu, konverter.Mu));
-                    Console.WriteLine(ErtekMertekegyseggel(ParatechnikaiJellemzo.SdErtek, konverter.SdErtek));
-                    Console.WriteLine(ErtekMertekegyseggel(ParatechnikaiJellemzo.Rv, konverter.Ellenallas()));
-                    break;
+                Console.WriteLine(ErtekMertekegyseggel(ParatechnikaiJellemzo.Rv, konverter.Ellenallas()));
             }
+            else if (jellemzo.HasValue)
+            {
+                switch (jellemzo.Value)
+                {
+                    case ParatechnikaiJellemzo.SdErtek:
+                        Console.WriteLine(ErtekMertekegyseggel(ParatechnikaiJellemzo.Mu, konverter.Mu));
+                        Console.WriteLine(ErtekMertekegyseggel(ParatechnikaiJellemzo.Delta, konverter.Delta));
+                        Console.WriteLine(ErtekMertekegyseggel(ParatechnikaiJellemzo.Rv, konverter.Ellenallas()));
+                        break;
+                    case ParatechnikaiJellemzo.Mu:
+                        Console.WriteLine(ErtekMertekegyseggel(ParatechnikaiJellemzo.Delta, konverter.Delta));
+                        Console.WriteLine(ErtekMertekegyseggel(ParatechnikaiJellemzo.SdErtek, konverter.SdErtek));
+                        Console.WriteLine(ErtekMertekegyseggel(ParatechnikaiJellemzo.Rv, konverter.Ellenallas()));
+                        break;
+                    case ParatechnikaiJellemzo.Delta:
+                        Console.WriteLine(ErtekMertekegyseggel(ParatechnikaiJellemzo.Mu, konverter.Mu));
+                        Console.WriteLine(ErtekMertekegyseggel(ParatechnikaiJellemzo.SdErtek, konverter.SdErtek));
+                        Console.WriteLine(ErtekMertekegyseggel(ParatechnikaiJellemzo.Rv, konverter.Ellenallas()));
+                        break;
+                }
+            }
+        }
+        finally
+        {
+            Console.ResetColor(); 
         }
         Console.WriteLine("\nKilépéshez nyomjon meg egy billentyűt...");
         Console.ReadKey();

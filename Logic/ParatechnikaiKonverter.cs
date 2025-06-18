@@ -54,7 +54,6 @@ public class ParatechnikaiKonverterNemLegreteg : ParatechnikaiKonverter
                 break;
         }
     }
-
     public override double Ellenallas()
     {
         switch (_megadottJellemzo)
@@ -70,16 +69,15 @@ public class ParatechnikaiKonverterNemLegreteg : ParatechnikaiKonverter
                 throw new NotImplementedException();
         }
     }
-
     private double SzamolMu()
     {
         var ellenallas = Ellenallas();
-        return 1E8 * ellenallas * Constants.WaterVaporDiffusionCoefficientInAir / _vastagsag.Meters;
+        return 1E6 * ellenallas * Constants.WaterVaporDiffusionCoefficientInAir / _vastagsag.Meters;
     }
     private double SzamolDelta()
     {
         var ellenallas = Ellenallas();
-        return 1E2 * ellenallas / _vastagsag.Meters;
+        return _vastagsag.Meters / ellenallas;
     }
     private double SzamolSdErtek()
     {

@@ -18,10 +18,21 @@ IParatechnikaiKonverter konverter;
 var jellemzo = ParatechnikaiJellemzo.SdErtek;
 Length vastagsag;
 var legreteg = false;
+var input = "n";
 
 Console.WriteLine(Strings.LegretegetVagyNem);
 
-if (Console.ReadLine()?.Trim().ToLower() == "i")
+Console.ForegroundColor = Constants.InputTextColor;
+try
+{
+    input = Console.ReadLine()?.Trim().ToLower();
+}
+finally
+{
+    Console.ResetColor();
+}
+
+if (input == "i")
 {
     if (!inputReader.ReadTemperatureInCelsius(Strings.LegretegHomersekletBekeres, out var atlagHomerseklet) ||
         !inputReader.ReadLengthInCentimeters(Strings.RetegVastagsagBekeres, out vastagsag))
@@ -34,9 +45,10 @@ if (Console.ReadLine()?.Trim().ToLower() == "i")
 else
 {
     if (!inputReader.ReadIntInRange(Strings.ParatechnikaiJellemzoValasztas, (int)ParatechnikaiJellemzo.SdErtek, (int)ParatechnikaiJellemzo.Delta, out var jellemzoszam) ||
-        !inputReader.ReadPositiveDouble(jellemzo.Nev(true).WithHungarianDefiniteArticle(true).Formatted(Strings.ErtekBekeres)!, out var ertek) ||
+        !inputReader.ReadPositiveDouble(((ParatechnikaiJellemzo)jellemzoszam).Nev(true).WithHungarianDefiniteArticle(true).Formatted(Strings.ErtekBekeres)!, out var ertek) ||
         !inputReader.ReadLengthInCentimeters(Strings.RetegVastagsagBekeres, out vastagsag))
     {
+        Console.ReadLine();
         return;
     }
     jellemzo = (ParatechnikaiJellemzo)jellemzoszam;

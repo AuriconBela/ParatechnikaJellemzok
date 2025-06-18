@@ -7,6 +7,7 @@ public class InputReader : IInputReader
     public bool ReadPositiveDouble(string prompt, out double value)
     {
         Console.WriteLine(prompt);
+        Console.ForegroundColor = Constants.InputTextColor;
         var input = Console.ReadLine() ?? string.Empty;
         try
         {
@@ -15,15 +16,21 @@ public class InputReader : IInputReader
         }
         catch (ArgumentException ex)
         {
+            Console.ForegroundColor = Constants.ErrorTextColor;
             Console.WriteLine(ex.Message);
             value = 0;
             return false;
+        }
+        finally
+        {
+            Console.ResetColor();
         }
     }
 
     public bool ReadIntInRange(string prompt, int min, int max, out int value)
     {
         Console.WriteLine(prompt);
+        Console.ForegroundColor = Constants.InputTextColor;
         var input = Console.ReadLine() ?? string.Empty;
         try
         {
@@ -32,9 +39,14 @@ public class InputReader : IInputReader
         }
         catch (ArgumentException ex)
         {
+            Console.ForegroundColor = Constants.ErrorTextColor;
             Console.WriteLine(ex.Message);
             value = 0;
             return false;
+        }        
+        finally
+        {
+            Console.ResetColor();
         }
     }
 
