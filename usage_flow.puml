@@ -1,0 +1,21 @@
+@startuml
+start
+:Program indítása;
+:DI konténer inicializálása;
+:InputReader példány létrehozása;
+:Kérdés: Légréteget szeretne számolni?;
+if (Igen) then (igen)
+  :Átlaghőmérséklet bekérése;
+  :Vastagság bekérése;
+  :Konverter példányosítása (légréteg);
+else (nem)
+  :Jellemző típus bekérése;
+  :Jellemző érték bekérése;
+  :Vastagság bekérése;
+  :Konverter példányosítása (nem légréteg);
+endif
+:Számítások elvégzése;
+:Prezentáció (eredmények kiírása);
+:Várakozás billentyűre;
+stop
+@enduml

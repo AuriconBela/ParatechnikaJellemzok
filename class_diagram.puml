@@ -1,0 +1,82 @@
+@startuml class_diagram
+
+' --- Enum és attribútumok ---
+enum ParatechnikaiJellemzo {
+    SdErtek
+    Mu
+    Delta
+    Rv
+}
+
+class JelAttribute {
+    +Jel: string
+}
+class MertekegysegAttribute {
+    +Mertekegyseg: string
+}
+class NevAttribute {
+    +Nev: string
+}
+
+ParatechnikaiJellemzo o-- JelAttribute
+ParatechnikaiJellemzo o-- MertekegysegAttribute
+ParatechnikaiJellemzo o-- NevAttribute
+
+' --- Konverter interfész és implementációk ---
+interface IParatechnikaiKonverter {
+    +SdErtek: double
+    +Mu: double
+    +Delta: double
+    +Ellenallas(): double
+}
+
+abstract class ParatechnikaiKonverter {
+    #_vastagsag: Length
+    +SdErtek: double
+    +Mu: double
+    +Delta: double
+    +Ellenallas(): double
+}
+
+class ParatechnikaiKonverterLegreteg {
+    -_atlagHomerseklet: Temperature
+    +Ellenallas(): double
+}
+class ParatechnikaiKonverterNemLegreteg {
+    -_megadottErtek: double
+    -_megadottJellemzo: ParatechnikaiJellemzo
+    +Ellenallas(): double
+}
+
+IParatechnikaiKonverter <|.. ParatechnikaiKonverter
+ParatechnikaiKonverter <|-- ParatechnikaiKonverterLegreteg
+ParatechnikaiKonverter <|-- ParatechnikaiKonverterNemLegreteg
+
+' --- Factory és Presenter ---
+interface IParatechnikaiKonverterFactory {
+    +Create_LegretegSzamito(Length, Temperature): IParatechnikaiKonverter
+    +Create_NemLegretegSzamito(ParatechnikaiJellemzo, double, Length): IParatechnikaiKonverter
+}
+class ParatechnikaiKonverterFactory
+
+IParatechnikaiKonverterFactory <|.. ParatechnikaiKonverterFactory
+
+interface IParatechnikaiKonverterPresenter {
+    +Present(IParatechnikaiKonverter, ParatechnikaiJellemzo?, bool)
+}
+class ParatechnikaiKonverterPresenter
+
+IParatechnikaiKonverterPresenter <|.. ParatechnikaiKonverterPresenter
+
+' --- Input olvasás ---
+interface IInputReader {
+    +ReadIntInRange(string, int, int, out int): bool
+    +ReadLengthInCentimeters(string, out Length): bool
+    +ReadPositiveDouble(string, out double): bool
+    +ReadTemperatureInCelsius(string, out Temperature): bool
+}
+class InputReader
+
+IInputReader <|.. InputReader
+
+@enduml
