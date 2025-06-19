@@ -25,7 +25,7 @@ var input = "n";
 
 Console.WriteLine(Strings.LegretegetVagyNem);
 
-using (var colorSetter = scope.Resolve<IConsoleColorSetter>(new NamedParameter("consoleColor", Constants.InputTextColor)))
+using (var colorSetter = colorSetterFactory.Invoke(Constants.InputTextColor))
 {
     input = Console.ReadLine()?.Trim().ToLower();
 }
