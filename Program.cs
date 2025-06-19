@@ -13,6 +13,9 @@ var factory = scope.Resolve<IParatechnikaiKonverterFactory>();
 var presenter = scope.Resolve<IParatechnikaiKonverterPresenter>();
 var inputReader = scope.Resolve<IInputReader>();
 
+var colorSetterFactory = scope.Resolve<Func<ConsoleColor, IConsoleColorSetter>>();
+inputReader.ConsoleColorSetter = colorSetterFactory;
+
 IParatechnikaiKonverter konverter;
 
 var jellemzo = ParatechnikaiJellemzo.SdErtek;
@@ -22,14 +25,9 @@ var input = "n";
 
 Console.WriteLine(Strings.LegretegetVagyNem);
 
-Console.ForegroundColor = Constants.InputTextColor;
-try
+using (var colorSetter = scope.Resolve<IConsoleColorSetter>(new NamedParameter("consoleColor", Constants.InputTextColor)))
 {
     input = Console.ReadLine()?.Trim().ToLower();
-}
-finally
-{
-    Console.ResetColor();
 }
 
 if (input == "i")

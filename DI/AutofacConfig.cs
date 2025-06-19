@@ -12,7 +12,19 @@ public static class AutofacConfig
 
         builder.RegisterType<ParatechnikaiKonverterFactory>().As<IParatechnikaiKonverterFactory>().SingleInstance();
         builder.RegisterType<ParatechnikaiKonverterPresenter>().As<IParatechnikaiKonverterPresenter>().SingleInstance();
-        builder.RegisterType<InputReader>().As<IInputReader>().SingleInstance();
+        builder.RegisterType<InputReader>().As<IInputReader>();
+
+        builder.Register<IConsoleColorSetter>((ctx, p) =>
+        {
+            var color = p.Named<ConsoleColor>("consoleColor");
+            return new ConsoleColorSetter(color);
+        }).AsSelf();
+
+        builder.Register<Func<ConsoleColor, IConsoleColorSetter>>(ctx =>
+        {
+            var c = ctx.Resolve<IComponentContext>();
+            return color => c.Resolve<IConsoleColorSetter>(new NamedParameter("consoleColor", color));
+        });        
 
         return builder.Build();
     }

@@ -8,5 +8,7 @@ namespace ParatechnikaJellemzok.Misc
         bool ReadLengthInCentimeters(string prompt, out Length length);
         bool ReadPositiveDouble(string prompt, out double value);
         bool ReadTemperatureInCelsius(string prompt, out Temperature temp);
+
+        Func<ConsoleColor, IConsoleColorSetter>? ConsoleColorSetter { get; set; }
     }
 }

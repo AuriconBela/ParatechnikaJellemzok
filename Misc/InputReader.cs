@@ -4,49 +4,50 @@ namespace ParatechnikaJellemzok.Misc;
 
 public class InputReader : IInputReader
 {
+    public Func<ConsoleColor, IConsoleColorSetter>? ConsoleColorSetter { get ; set; }
+
     public bool ReadPositiveDouble(string prompt, out double value)
     {
         Console.WriteLine(prompt);
-        Console.ForegroundColor = Constants.InputTextColor;
-        var input = Console.ReadLine() ?? string.Empty;
-        try
+
+        using (var colorSetter = ConsoleColorSetter?.Invoke(Constants.InputTextColor))
         {
-            value = InputValidator.RequirePositiveDouble(input);
-            return true;
-        }
-        catch (ArgumentException ex)
-        {
-            Console.ForegroundColor = Constants.ErrorTextColor;
-            Console.WriteLine(ex.Message);
-            value = 0;
-            return false;
-        }
-        finally
-        {
-            Console.ResetColor();
+            var input = Console.ReadLine() ?? string.Empty;
+            try
+            {
+                value = InputValidator.RequirePositiveDouble(input);
+                return true;
+            }
+            catch (ArgumentException ex)
+            {
+                Console.ForegroundColor = Constants.ErrorTextColor;
+                Console.WriteLine(ex.Message);
+                value = 0;
+                return false;
+            }
         }
     }
 
     public bool ReadIntInRange(string prompt, int min, int max, out int value)
     {
         Console.WriteLine(prompt);
-        Console.ForegroundColor = Constants.InputTextColor;
-        var input = Console.ReadLine() ?? string.Empty;
-        try
+
+        using (var colorSetter = ConsoleColorSetter?.Invoke(Constants.InputTextColor))
         {
-            value = InputValidator.RequireIntInRange(input, min, max);
-            return true;
-        }
-        catch (ArgumentException ex)
-        {
-            Console.ForegroundColor = Constants.ErrorTextColor;
-            Console.WriteLine(ex.Message);
-            value = 0;
-            return false;
-        }        
-        finally
-        {
-            Console.ResetColor();
+
+            var input = Console.ReadLine() ?? string.Empty;
+            try
+            {
+                value = InputValidator.RequireIntInRange(input, min, max);
+                return true;
+            }
+            catch (ArgumentException ex)
+            {
+                Console.ForegroundColor = Constants.ErrorTextColor;
+                Console.WriteLine(ex.Message);
+                value = 0;
+                return false;
+            }
         }
     }
 
